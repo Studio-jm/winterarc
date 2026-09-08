@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HealthData locale="fr_FR">
+  <ExportDate value="2026-09-07 08:00:00 +0200"/>
+  <Workout workoutActivityType="HKWorkoutActivityTypeRunning" duration="34.2" durationUnit="min" totalDistance="6.4" totalDistanceUnit="km" totalEnergyBurned="410" totalEnergyBurnedUnit="kcal" sourceName="Apple Watch" sourceVersion="11.0" creationDate="2026-09-07 07:40:00 +0200" startDate="2026-09-07 07:02:00 +0200" endDate="2026-09-07 07:36:12 +0200"/>
+  <Workout workoutActivityType="HKWorkoutActivityTypeWalking" duration="18" durationUnit="min" totalDistance="1.4" totalDistanceUnit="km" sourceName="iPhone" creationDate="2026-09-06 18:30:00 +0200" startDate="2026-09-06 18:10:00 +0200" endDate="2026-09-06 18:28:00 +0200"/>
+  <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch" value="HKCategoryValueSleepAnalysisAsleepCore" startDate="2026-09-06 23:12:00 +0200" endDate="2026-09-07 01:40:00 +0200"/>
+  <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch" value="HKCategoryValueSleepAnalysisAsleepDeep" startDate="2026-09-07 01:40:00 +0200" endDate="2026-09-07 03:05:00 +0200"/>
+  <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch" value="HKCategoryValueSleepAnalysisAsleepREM" startDate="2026-09-07 03:05:00 +0200" endDate="2026-09-07 04:20:00 +0200"/>
+  <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch" value="HKCategoryValueSleepAnalysisAsleepCore" startDate="2026-09-07 04:20:00 +0200" endDate="2026-09-07 05:36:00 +0200"/>
+  <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch" value="HKCategoryValueSleepAnalysisInBed" startDate="2026-09-06 23:00:00 +0200" endDate="2026-09-07 05:45:00 +0200"/>
+  <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch" value="HKCategoryValueSleepAnalysisAwake" startDate="2026-09-07 05:36:00 +0200" endDate="2026-09-07 05:45:00 +0200"/>
+</HealthData>
