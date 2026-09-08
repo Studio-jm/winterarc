@@ -62,6 +62,11 @@ export default async function HomePage() {
       <p className="text-xs text-[var(--muted)]">
         Règles {today.evaluation.rulesVersion} · déterministes · pas de LLM
       </p>
+      <p>
+        <Link href="/simulation" className="text-xs text-[var(--muted)] underline underline-offset-4">
+          Aperçu simulation
+        </Link>
+      </p>
     </main>
   );
 }
