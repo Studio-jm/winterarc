@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Banners } from "@/components/Banners";
-import { loadToday } from "@/lib/store";
+import { WeekStrip } from "@/components/WeekStrip";
+import { COURSE_BADGE } from "@/lib/campusCoach/week";
+import { loadHome } from "@/lib/home/today";
 import { formatParisLong, parisDate } from "@/lib/time";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +13,7 @@ function fmtHours(n: number | null): string {
 }
 
 export default async function HomePage() {
-  const today = await loadToday(parisDate());
+  const today = await loadHome(parisDate());
   return (
     <main className="page gap-6">
       <header>
@@ -25,11 +27,35 @@ export default async function HomePage() {
         </p>
       </header>
 
-      <Banners banners={today.evaluation.banners} />
+      <article className="tile flex flex-col gap-4" data-hero="session" data-source="campus_coach">
+        <div className="flex items-start justify-between gap-3">
+          <p className="label">Séance du jour</p>
+          <span className="course-badge">{COURSE_BADGE}</span>
+        </div>
+        <h2 className="text-2xl font-semibold tracking-tight">{today.session.type}</h2>
+        <dl className="grid grid-cols-2 gap-3 text-sm">
+          <div>
+            <dt className="label">Durée</dt>
+            <dd className="mt-1 text-lg font-medium">{today.session.duration ?? "—"}</dd>
+          </div>
+          <div>
+            <dt className="label">Allure</dt>
+            <dd className="mt-1 text-lg font-medium">{today.session.pace ?? "—"}</dd>
+          </div>
+        </dl>
+        <p className="whitespace-pre-wrap text-sm leading-relaxed text-[var(--muted)]">
+          {today.displayText}
+        </p>
+        <Banners banners={today.sessionFlags} />
+      </article>
 
-      <section className="grid grid-cols-2 gap-3">
-        <Tile label="Sommeil" value={fmtHours(today.sleepHours)} hint={today.sleepSource === "import" ? "import" : today.sleepSource === "saisie" ? "saisie" : "à saisir"} href="/saisie" />
-        <Tile label="RPE" value={today.rpe == null ? "—" : String(today.rpe)} hint="1–10" href="/saisie" />
+      <section className="grid grid-cols-3 gap-3" data-home="vitals">
+        <Tile
+          label="Sommeil"
+          value={fmtHours(today.sleepHours)}
+          hint={today.sleepSource === "import" ? "import" : today.sleepSource === "saisie" ? "saisie" : "à saisir"}
+          href="/saisie"
+        />
         <Tile
           label="Douleur"
           value={today.pain == null ? "—" : String(today.pain)}
@@ -44,9 +70,11 @@ export default async function HomePage() {
         />
       </section>
 
+      <WeekStrip days={today.week} />
+
       {today.activities.length ? (
         <section className="tile">
-          <p className="label">Séances</p>
+          <p className="label">Fait</p>
           <ul className="mt-3 flex flex-col gap-2 text-sm">
             {today.activities.map((a) => (
               <li key={a.id} className="flex justify-between gap-3">
@@ -90,7 +118,7 @@ function Tile({
   return (
     <Link href={href} className="tile block">
       <p className="label">{label}</p>
-      <p className="mt-3 text-2xl font-medium tracking-tight">{value}</p>
+      <p className="mt-3 text-xl font-medium tracking-tight">{value}</p>
       <p className="mt-1 text-xs text-[var(--muted)]">{hint}</p>
     </Link>
   );

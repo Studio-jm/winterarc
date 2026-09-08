@@ -1,3 +1,9 @@
+import {
+  displayCampusCoachText,
+  isCampusCoachMirror,
+  parseCampusCoachFields,
+  type SessionFields,
+} from "../campusCoach/week";
 import { getDb } from "../db";
 import { evaluateRules, type Evaluation } from "../rules";
 import {
@@ -40,6 +46,9 @@ export type SemaineFait = {
 
 export type SemainePrevu = {
   campusCoachText: string;
+  displayText: string;
+  fromMirror: boolean;
+  session: SessionFields;
   optional: FacultatifState;
   nutrition: NutritionCible;
 };
@@ -141,6 +150,7 @@ export async function loadSemaine(anchor = parisDate()): Promise<SemaineWeek> {
   const days: SemaineDay[] = [];
   for (const localDate of dates) {
     const campusCoachText = planned.get(localDate)?.campus_coach_text ?? "";
+    const displayText = displayCampusCoachText(localDate, campusCoachText);
     const saisie = (await loadSaisie(localDate, db)) ?? null;
     const imported = hoursFromSleeps(sleepsByDate.get(localDate) ?? []);
     const sleepHours = imported ?? saisie?.sleep_hours ?? null;
@@ -161,8 +171,11 @@ export async function loadSemaine(anchor = parisDate()): Promise<SemaineWeek> {
       isToday: localDate === anchor,
       prevu: {
         campusCoachText,
+        displayText,
+        fromMirror: isCampusCoachMirror(campusCoachText),
+        session: parseCampusCoachFields(displayText),
         optional: facultatif,
-        nutrition: nutritionCible(campusCoachText),
+        nutrition: nutritionCible(displayText),
       },
       fait: toFait(
         saisie,

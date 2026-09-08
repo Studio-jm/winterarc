@@ -6,9 +6,11 @@ import { useState } from "react";
 type Props = {
   localDate: string;
   initialText: string;
+  label?: string;
+  compact?: boolean;
 };
 
-export function CampusCoachPaste({ localDate, initialText }: Props) {
+export function CampusCoachPaste({ localDate, initialText, label, compact }: Props) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,13 +39,13 @@ export function CampusCoachPaste({ localDate, initialText }: Props) {
   return (
     <form action={onSubmit} className="flex flex-col gap-2">
       <label className="flex flex-col gap-2">
-        <span className="label">Course du jour</span>
+        <span className="label">{label ?? "Course du jour"}</span>
         <textarea
           name="campusCoachText"
-          rows={3}
+          rows={compact ? 2 : 3}
           defaultValue={initialText}
-          placeholder="Coller ici la séance Campus Coach. L'app ne l'écrit pas."
-          className="field min-h-[4.5rem] resize-y text-sm leading-relaxed"
+          placeholder="Coller la séance Campus Coach. L'app ne l'écrit pas."
+          className={`field resize-y text-sm leading-relaxed ${compact ? "min-h-[3.25rem]" : "min-h-[4.5rem]"}`}
         />
       </label>
       {error ? <p className="text-sm text-[var(--red)]">{error}</p> : null}
