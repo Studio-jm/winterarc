@@ -70,9 +70,9 @@ function DayCard({ day }: { day: SemaineDay }) {
       <section className="flex flex-col gap-3">
         <p className="label">Prévu</p>
         <CampusCoachPaste
-          key={`${day.localDate}:${prevu.campusCoachText}`}
+          key={`${day.localDate}:${prevu.displayText}`}
           localDate={day.localDate}
-          initialText={prevu.campusCoachText}
+          initialText={prevu.displayText}
         />
         <p className="text-sm text-[var(--muted)]">{prevu.optional.label}</p>
         <p className="text-sm text-[var(--muted)]">{prevu.nutrition.line}</p>

@@ -51,6 +51,10 @@ body {
   @apply inline-flex shrink-0 items-center rounded-full border border-[var(--line)] bg-[#1a2229] px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-[var(--ice)];
 }
 
+.course-badge {
+  @apply inline-flex shrink-0 items-center rounded-full border border-[var(--line)] px-2 py-0.5 text-[10px] font-normal normal-case tracking-normal text-[var(--muted)];
+}
+
 .banner-red {
   @apply rounded-2xl border border-[#5c2a26] bg-[#2a1412] px-4 py-3 text-[#f3d0cc];
 }
