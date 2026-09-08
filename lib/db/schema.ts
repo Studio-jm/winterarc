@@ -100,6 +100,12 @@ CREATE TABLE IF NOT EXISTS track_points (
   FOREIGN KEY(activity_id) REFERENCES activities(id)
 );
 
+CREATE TABLE IF NOT EXISTS planned_days (
+  local_date TEXT PRIMARY KEY,
+  campus_coach_text TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE INDEX IF NOT EXISTS idx_activities_date ON activities(local_date);
 CREATE INDEX IF NOT EXISTS idx_sleep_date ON sleep_intervals(local_date);
 CREATE INDEX IF NOT EXISTS idx_repas_date ON repas(local_date);

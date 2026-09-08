@@ -43,6 +43,31 @@ export function addDays(isoDate: string, days: number): string {
   return parisDate(new Date(utc));
 }
 
+/** Monday index 0–6 for a civil YYYY-MM-DD (Europe/Paris local date). */
+export function weekdayMondayIndex(isoDate: string): number {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  const utcDay = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  return (utcDay + 6) % 7;
+}
+
+export function mondayOfParisWeek(isoDate: string): string {
+  return addDays(isoDate, -weekdayMondayIndex(isoDate));
+}
+
+/** Monday–Sunday civil dates for the Europe/Paris week containing `anchor`. */
+export function parisWeekDates(anchor = parisDate()): string[] {
+  const monday = mondayOfParisWeek(anchor);
+  return Array.from({ length: 7 }, (_, i) => addDays(monday, i));
+}
+
+export function formatWeekdayFr(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  return new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "UTC",
+    weekday: "long",
+  }).format(new Date(Date.UTC(y, m - 1, d, 12)));
+}
+
 export function hoursBetween(startIso: string, endIso: string): number {
   const ms = new Date(endIso).getTime() - new Date(startIso).getTime();
   return ms / 3_600_000;
