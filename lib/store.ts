@@ -58,6 +58,12 @@ export type RepasRow = {
 
 export type FlagRow = { key: string; value: string | null; source: string | null };
 
+export type PlannedDayRow = {
+  local_date: string;
+  campus_coach_text: string;
+  updated_at: string;
+};
+
 function bool(v: boolean | number | null | undefined): boolean {
   return Boolean(v);
 }
@@ -221,6 +227,47 @@ export async function importedSleepHours(localDate: string, db?: DbClient): Prom
 export async function loadSaisie(localDate: string, db?: DbClient): Promise<SaisieRow | undefined> {
   const client = db ?? (await getDb());
   return client.get<SaisieRow>(`SELECT * FROM saisie WHERE local_date = ?`, [localDate]);
+}
+
+/** Store the pasted Campus Coach line as-is. Never rewrite. */
+export async function upsertPlannedDay(
+  localDate: string,
+  campusCoachText: string,
+  db?: DbClient,
+): Promise<PlannedDayRow> {
+  const client = db ?? (await getDb());
+  await client.run(
+    `INSERT INTO planned_days (local_date, campus_coach_text, updated_at)
+     VALUES (?, ?, datetime('now'))
+     ON CONFLICT(local_date) DO UPDATE SET
+       campus_coach_text = excluded.campus_coach_text,
+       updated_at = datetime('now')`,
+    [localDate, campusCoachText],
+  );
+  const row = await client.get<PlannedDayRow>(
+    `SELECT local_date, campus_coach_text, updated_at FROM planned_days WHERE local_date = ?`,
+    [localDate],
+  );
+  if (!row) {
+    return { local_date: localDate, campus_coach_text: campusCoachText, updated_at: "" };
+  }
+  return row;
+}
+
+export async function loadPlannedDays(
+  dates: string[],
+  db?: DbClient,
+): Promise<Map<string, PlannedDayRow>> {
+  const client = db ?? (await getDb());
+  const map = new Map<string, PlannedDayRow>();
+  if (!dates.length) return map;
+  const placeholders = dates.map(() => "?").join(", ");
+  const rows = await client.all<PlannedDayRow>(
+    `SELECT local_date, campus_coach_text, updated_at FROM planned_days WHERE local_date IN (${placeholders})`,
+    dates,
+  );
+  for (const row of rows) map.set(row.local_date, row);
+  return map;
 }
 
 export async function dayHadAlert(localDate: string, db?: DbClient): Promise<boolean> {

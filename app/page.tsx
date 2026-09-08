@@ -18,6 +18,11 @@ export default async function HomePage() {
         <p className="label">Winter Arc</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight">Aujourd&apos;hui</h1>
         <p className="mt-1 capitalize text-[var(--muted)]">{formatParisLong()}</p>
+        <p className="mt-3">
+          <Link href="/semaine" className="label">
+            Cette semaine
+          </Link>
+        </p>
       </header>
 
       <Banners banners={today.evaluation.banners} />
